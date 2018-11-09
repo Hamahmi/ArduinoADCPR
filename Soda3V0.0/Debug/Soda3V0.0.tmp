@@ -22,9 +22,9 @@
   <FILE>Soda3V0.0.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <READ_ADC><FILE>C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0.0\main.asm</FILE><LINE>43</LINE></READ_ADC>
-  <KEEP_POLING><FILE>C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0.0\main.asm</FILE><LINE>48</LINE></KEEP_POLING>
-  <ZERO><FILE>C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0.0\main.asm</FILE><LINE>65</LINE></ZERO>
-  <ONE><FILE>C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0.0\main.asm</FILE><LINE>70</LINE></ONE>
+  <READ_ADC><FILE>C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0.0\main.asm</FILE><LINE>40</LINE></READ_ADC>
+  <KEEP_POLING><FILE>C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0.0\main.asm</FILE><LINE>45</LINE></KEEP_POLING>
+  <ZERO><FILE>C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0.0\main.asm</FILE><LINE>64</LINE></ZERO>
+  <ONE><FILE>C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0.0\main.asm</FILE><LINE>69</LINE></ONE>
  </LABELS>
 </ASSEMBLER_INFO>
