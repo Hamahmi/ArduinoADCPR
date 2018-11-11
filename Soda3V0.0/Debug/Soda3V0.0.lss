@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0.0\main.asm Fri Nov 09 23:42:12 2018
+AVRASM ver. 2.2.7  C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0.0\main.asm Sun Nov 11 18:07:15 2018
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc'
@@ -1868,50 +1868,51 @@ AVRASM ver. 2.2.7  C:\Users\Hamahmi\Documents\Atmel Studio\7.0\Soda3V0.0\Soda3V0
                                  
                                  // INTERNAL LED IS USED ONLY FOR DEBUGGING PURPOSES IN ORDER IF LED IS BURNED
                                  
-000000 ef0f                      LDI R16 , 0xFF
-000001 9300 0027                 STS 0x27, R16	; DDRC	C OUTPUT FOR LED
-000003 9300 0024                 STS 0x24, R16	; DDRB  B OUTPUT FOR INTERNAL LED
-000005 e000                      LDI R16 , 0x00		
-000006 9300 0021                 STS 0x21, R16	; DDRA	A INPUT  FOR ADC 
-000008 e807                      LDI R16 , 0x87	
-000009 9300 007a                 STS 0x7A, R16	; ADCSRA -> ENABLE ADC AND CLK/128
-00000b ec00                      LDI R16 , 0xC0
-00000c 9300 007c                 STS 0x7C, R16	; ADMUX	 -> 2.56 VREF, ADC0 SIGNAL ENDED INPUT, ADCH[1,0]:ADCL
+000000 e000                      LDI R16 , 0x00		
+000001 9300 0021                 STS 0x21, R16	; DDRA	A INPUT  FOR ADC 
+000003 ef0f                      LDI R16 , 0xFF
+000004 9300 0027                 STS 0x27, R16	; DDRC	C OUTPUT FOR LED
+000006 9300 0024                 STS 0x24, R16	; DDRB  B OUTPUT FOR INTERNAL LED
+000008 9300 0022                 STS 0x22, R16	; PORTA A IS INPUT WITH PULL UP RESISTORS
+00000a e807                      LDI R16 , 0x87	
+00000b 9300 007a                 STS 0x7A, R16	; ADCSRA -> ENABLE ADC AND CLK/128
+00000d ec00                      LDI R16 , 0xC0
+00000e 9300 007c                 STS 0x7C, R16	; ADMUX	 -> 2.56 VREF, ADC0 SIGNAL ENDED INPUT, ADCH[1,0]:ADCL
                                  
                                  
                                  
                                  READ_ADC:
-00000e 9100 007a                 	LDS	R16, 0x7A ; ADCSRA									// SBI ADCSRA, ADSC
-000010 6400                      	SBR R16, 0b01000000										// SBI ADCSRA, ADSC
-000011 9300 007a                 	STS 0x7A, R16	; ADSC		START CONVERSION			// SBI ADCSRA, ADSC
+000010 9100 007a                 	LDS	R16, 0x7A ; ADCSRA									// SBI ADCSRA, ADSC
+000012 6400                      	SBR R16, 0b01000000										// SBI ADCSRA, ADSC
+000013 9300 007a                 	STS 0x7A, R16	; ADSC		START CONVERSION			// SBI ADCSRA, ADSC
                                  
                                  	KEEP_POLING :
-000013 9100 007a                 		LDS R16 ,0x7A	;									//	SBIS ADCSRA, ADIF  
-000015 ff04                      		SBRS R16, 4		; ADIF	WAIT TILL CONVERSION ENDS	//	SBIS ADCSRA, ADIF
-000016 940c 0013                 		JMP KEEP_POLING
-000018 9100 007a                 	LDS R16, 0x7A											// SBI ADCSRA, 4
-00001a 6100                      	SBR R16, 0b00010000										// SBI ADCSRA, 4
-00001b 9300 007a                 	STS 0x7A, R16		; ADIF	CLEAR ADIF FLAG				// SBI ADCSRA, 4
+000015 9100 007a                 		LDS R16 ,0x7A	;									//	SBIS ADCSRA, ADIF  
+000017 ff04                      		SBRS R16, 4		; ADIF	WAIT TILL CONVERSION ENDS	//	SBIS ADCSRA, ADIF
+000018 940c 0015                 		JMP KEEP_POLING
+00001a 9100 007a                 	LDS R16, 0x7A											// SBI ADCSRA, 4
+00001c 6100                      	SBR R16, 0b00010000										// SBI ADCSRA, 4
+00001d 9300 007a                 	STS 0x7A, R16		; ADIF	CLEAR ADIF FLAG				// SBI ADCSRA, 4
                                  	
-00001d 9100 0078                 	LDS R16 , 0x78	; ADCL		READ ADCL
+00001f 9100 0078                 	LDS R16 , 0x78	; ADCL		READ ADCL
                                  	// DO NOT REALLY NEAD ADCL 
-00001f 9100 0079                 	LDS R16 , 0x79	; ADCH		READ ADCH
-000021 ff00                      	SBRS R16 , 0	; SET THRESHOLD
-000022 940c 0029                 	JMP ZERO		; DARK
-000024 ff01                      	SBRS R16 , 1	; SET THRESHOLD
-000025 940c 0029                 	JMP ZERO		; DARK
-000027 940c 002d                 	JMP ONE			; LIGHT
+000021 9100 0079                 	LDS R16 , 0x79	; ADCH		READ ADCH
+000023 ff00                      	SBRS R16 , 0	; SET THRESHOLD
+000024 940c 002b                 	JMP ZERO		; DARK
+000026 ff01                      	SBRS R16 , 1	; SET THRESHOLD
+000027 940c 002b                 	JMP ZERO		; DARK
+000029 940c 002f                 	JMP ONE			; LIGHT
                                  
                                  	
                                  	
                                  ZERO :
-000029 9a47                      	SBI PORTC , 7	; TURN LED ON
-00002a 9a2f                      	SBI PORTB , 7	; TURN INTERNAL LED ON
-00002b 940c 000e                 	JMP READ_ADC	; KEEP READING
+00002b 9a47                      	SBI PORTC , 7	; TURN LED ON
+00002c 9a2f                      	SBI PORTB , 7	; TURN INTERNAL LED ON
+00002d 940c 0010                 	JMP READ_ADC	; KEEP READING
                                  
                                  ONE : 
-00002d 9847                      	CBI PORTC , 7	; TURN LED OFF
-00002e 982f                      	CBI PORTB , 7	; TURN INTERNAL LED OFF
+00002f 9847                      	CBI PORTC , 7	; TURN LED OFF
+000030 982f                      	CBI PORTB , 7	; TURN INTERNAL LED OFF
 
 
 RESOURCE USE INFORMATION
@@ -1931,7 +1932,7 @@ counted separately from r26..r31 here.
 "ATmega2560" register use summary:
 x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  21 r17:   0 r18:   0 r19:   0 r20:   0 
+r13:   0 r14:   0 r15:   0 r16:  22 r17:   0 r18:   0 r19:   0 r20:   0 
 r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
 r29:   0 r30:   0 r31:   0 
 Registers used: 1 out of 35 (2.9%)
@@ -1955,14 +1956,14 @@ reti  :   0 rjmp  :   0 rol   :   0 ror   :   0 sbc   :   0 sbci  :   0
 sbi   :   2 sbic  :   0 sbis  :   0 sbiw  :   0 sbr   :   2 sbrc  :   0 
 sbrs  :   3 sec   :   0 seh   :   0 sei   :   0 sen   :   0 ser   :   0 
 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 spm   :   0 
-st    :   0 std   :   0 sts   :   7 sub   :   0 subi  :   0 swap  :   0 
+st    :   0 std   :   0 sts   :   8 sub   :   0 subi  :   0 swap  :   0 
 tst   :   0 wdr   :   0 
 Instructions used: 8 out of 116 (6.9%)
 
 "ATmega2560" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000062     98      0     98  262144   0.0%
+[.cseg] 0x000000 0x000066    102      0    102  262144   0.0%
 [.dseg] 0x000200 0x000200      0      0      0    8192   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    4096   0.0%
 
